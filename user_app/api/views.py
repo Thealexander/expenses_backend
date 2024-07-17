@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import check_password
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.fields import NOT_READ_ONLY_REQUIRED
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -11,7 +11,7 @@ from user_app.api.serializers import RegistrationSerializer
 from user_app.models import Account
 
 
-@api_view([GET])
+@api_view(['GET'])
 @permission_classes((IsAuthenticated))
 def session_view(request):
     if request.method == "GET":
