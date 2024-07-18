@@ -26,12 +26,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         if password != password2:
             raise serializers.ValidationError(
-                {"error": "El passwor de confirmacion no coincide"}
+                {"error": "password doesnt match"}
             )
 
         if Account.objects.filter(email=self.validated_data["email"]).exists():
             raise serializers.ValidationError(
-                {"error": "El email del usuario ya existe"}
+                {"error": "email. already registered"}
             )
 
         account = Account.objects.create_user(

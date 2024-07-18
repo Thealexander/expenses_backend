@@ -12,7 +12,7 @@ from user_app.models import Account
 
 
 @api_view(['GET'])
-@permission_classes((IsAuthenticated))
+@permission_classes([IsAuthenticated])
 def session_view(request):
     if request.method == "GET":
         user = request.user
