@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from expenseslist_app.models import Finance
+from expenseslist_app.models import Expense
 from datetime import datetime
 from django.core.exceptions import ValidationError
 
 
-class FinanceSerializer(serializers.ModelSerializer):
+class ExpenceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Finance
+        model = Expense
         fields = [
             "id",
             "description",
@@ -77,20 +77,3 @@ class FinanceSerializer(serializers.ModelSerializer):
         instance.status = validated_data.get("status", instance.status)
         instance.save()
         return instance
-
-
-# serilializer mode
-""" 
-class FinanceSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    description = serializers.CharField(max_length=255)
-    transaction_type = serializers.CharField(max_length=2)
-    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
-    execution_date = serializers.DateField()
-    payment_method = serializers.CharField(max_length=2)
-    support_document = serializers.FileField(required=False)
-    status = serializers.BooleanField()
-"""
-
-
-##aca termina comentario

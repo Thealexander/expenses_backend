@@ -6,7 +6,7 @@ from user_app.models import Account
 # Create your models here.
 
 
-class Finance(models.Model):
+class Expense(models.Model):
     INCOME = "IN"
     EXPENSE = "EX"
     TRANSACTION_TYPE_CHOICES = [

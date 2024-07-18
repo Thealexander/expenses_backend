@@ -15,8 +15,8 @@ from datetime import timedelta
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-#BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-w-9#7#%w%t7om8sx_xc$!6t+o6&_j6)(_#lcb-imhkg$e*u61=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -43,11 +43,12 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "user_app",
-    #"django_filters",
-    'corsheaders',
+    # "django_filters",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -55,8 +56,11 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
 ]
 
 ROOT_URLCONF = "expensesControl.urls"
@@ -79,7 +83,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "expensesControl.wsgi.application"
 
-AUTH_USER_MODEL = 'user_app.Account'
+AUTH_USER_MODEL = "user_app.Account"
 
 
 # Database
@@ -91,14 +95,14 @@ AUTH_USER_MODEL = 'user_app.Account'
         "NAME": BASE_DIR / "db.sqlite3",
     }
 } """
-DATABASES ={
-    'default':{
-        'ENGINE': 'django.db.backends.postgresql',
-        'USER': 'postgres',
-        'NAME': 'postgres',
-        'PASSWORD': 'home.1705',
-        'HOST': 'testserver.local',
-        'PORT' : '5434',
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": "postgres",
+        "NAME": "Finance",
+        "PASSWORD": "home.1705",
+        "HOST": "testserver.local",
+        "PORT": "5434",
     }
 }
 
@@ -139,9 +143,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_ROOT=os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
-STATICFILES_STORAGE='whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = "/static/"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -181,4 +185,4 @@ SIMPLE_JWT = {
 try:
     from .local_settings import DATABASES, DEBUG
 except ImportError as e:
-    print('Error:', e.msg)
+    print("Error:", e.msg)
