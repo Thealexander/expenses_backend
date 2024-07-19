@@ -16,10 +16,12 @@ from expenseslist_app.api.permission import IsRecordUserOrReadOnly
 # Usando APIView
 class ExpenseList(APIView):
 
-    # permission_classes = [IsAuthenticated]
-    pagination_class = ExpensesPagination
+    permission_classes = ([IsRecordUserOrReadOnly])
+    #pagination_class = ExpensesPagination
 
     def get(self, request):
+        # user = request.user
+        # expenses = Expense.objects.filter(created_by=user, status=True)
         expenses = Expense.objects.filter(status=True)
         serializer = ExpenceSerializer(expenses, many=True)
         return Response(serializer.data)
@@ -34,7 +36,7 @@ class ExpenseList(APIView):
 
 
 class ExpenseDetails(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = ([IsRecordUserOrReadOnly])
 
     def get_object(self, pk):
         try:

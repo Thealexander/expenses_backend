@@ -25,14 +25,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
         password2 = self.validated_data["password2"]
 
         if password != password2:
-            raise serializers.ValidationError(
-                {"error": "password doesnt match"}
-            )
+            raise serializers.ValidationError({"error": "password doesnt match"})
 
         if Account.objects.filter(email=self.validated_data["email"]).exists():
-            raise serializers.ValidationError(
-                {"error": "email. already registered"}
-            )
+            raise serializers.ValidationError({"error": "email. already registered"})
 
         account = Account.objects.create_user(
             first_name=self.validated_data["first_name"],
@@ -47,3 +43,22 @@ class RegistrationSerializer(serializers.ModelSerializer):
         # account.set_password(password)
         account.save()
         return account
+
+
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = [
+            "id",
+            "first_name",
+            "last_name",
+            "username",
+            "email",
+            "phone_number",
+            "date_joined",
+            "last_login",
+            "is_admin",
+            "is_staff",
+            "is_active",
+            "is_superadmin",
+        ]

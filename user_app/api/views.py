@@ -7,33 +7,28 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.fields import NOT_READ_ONLY_REQUIRED
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from user_app.api.serializers import RegistrationSerializer
+from user_app.api.serializers import RegistrationSerializer, AccountSerializer
 from user_app.models import Account
+from rest_framework.views import APIView
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def session_view(request):
-    if request.method == "GET":
-        user = request.user
-        account = Account.objects.get(email=user)
-        data = {}
-        if account is not None:
-            data["response"] = "User is not logged"
-            data["username"] = account.username
-            data["email"] = account.email
-            data["first_name"] = account.first_name
-            data["last_name"] = account.last_name
-            data["phone_number"] = account.phone_number
-            refresh = RefreshToken.for_user(account)
-            data["token"] = {
-                "refresh": str(refresh),
-                "access": str(refresh.access_token),
-            }
-            return Response(data)
-        else:
-            data["error"] = "User doesnt exist"
-            return Response(data, status.HTTP_500_INTERNAL_SERVER_ERROR)
+    user = request.user
+    try:
+        account = Account.objects.get(email=user.email)
+        serializer = AccountSerializer(account)
+        data = serializer.data
+        refresh = RefreshToken.for_user(account)
+        data["token"] = {
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
+        }
+        return Response(data)
+    except Account.DoesNotExist:
+        data = {"error": "User does not exist"}
+        return Response(data, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(
@@ -81,7 +76,6 @@ def registration_view(request):
                 serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-
 @api_view(["POST"])
 def login_view(request):
     data = {}
@@ -105,3 +99,18 @@ def login_view(request):
         else:
             data["error"] = "Wrong credentials"
             return Response(data, status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class UserProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        data = {
+            "username": user.username,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "phone_number": getattr(user, 'phone_number', 'N/A')  # Ajusta según tus modelos
+        }
+        return Response(data)
