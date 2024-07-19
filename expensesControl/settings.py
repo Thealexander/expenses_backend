@@ -101,8 +101,8 @@ DATABASES = {
         "USER": "postgres",
         "NAME": "Finance",
         "PASSWORD": "home.1705",
-        "HOST": "testserver.local",
-        "PORT": "5434",
+        "HOST": "financedb.czes28w8ifpo.us-east-1.rds.amazonaws.com",
+        "PORT": "5432",
     }
 }
 
